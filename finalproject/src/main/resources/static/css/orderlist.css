@@ -4,7 +4,6 @@
     font-size: 35px;
 }
 
-
 table{width: 100%;
     border: 0px;
     border-spacing: 0px;
@@ -20,3 +19,84 @@ caption {
     display: table-caption;
     text-align: -webkit-center;
 }
+#ordertable{
+	border-top:2px solid #111;
+	margin-top:10px;
+	border-width:100%;
+	
+
+}
+#orderbody>tr>#tdborder{
+	border-right:3mm solid #ffffff;
+}
+
+#orderhead{
+	font-size:16px;
+	border-bottom:2px solid #111;
+}
+#orderhead>tr>#thborder{
+	border-right:3mm solid #ffffff;
+}
+#orderhead>tr>th{
+	height:50px;
+	font-family: 'NanumSquareOTFR';
+}
+#orderbody{
+	font-size:14.5px;
+	text-align:center;
+}
+
+
+#modalorderbody>tr>#modaltdborder{
+	border-right:0.3mm solid #111;
+	border-right-style: dashed;
+	width:3px;
+	
+}
+
+#modalorderhead{
+	font-size:16px;
+	border-bottom:2px solid #111;
+	color:#111;
+}
+#modalorderhead>tr>#modalthborder{
+	
+}
+#modalorderhead>tr>th{
+	height:50px;
+	font-family: 'NanumSquareOTFR';
+	vertical-align: middle;
+}
+#modalorderbody{
+	font-size:14.5px;
+	text-align:center;
+	color:#111;
+}
+
+.myInfo_inside5{
+	float:left;
+	margin-top:20px;
+    background-color: #ffffff;
+    display:none;
+    text-align:center;
+}
+
+
+#modalorlist{
+	font-family: "NanumSquareOTFR";
+    color: #333;
+    font-size: 35px;
+	
+}
+
+#modalordertable{
+	margin-top:10px;
+	border-width:100%;
+}
+
+#modalordertablehide{
+	cursor:pointer;
+}
+
+
+

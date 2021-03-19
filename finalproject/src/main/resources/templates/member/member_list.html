@@ -37,6 +37,7 @@
 			      <th>Point</th>
 			      <th>TotalOrder</th>
 			      <th>Level</th>
+			      <th></th>
 			    </tr>
 			  </thead>
 			  <tbody>
@@ -52,8 +53,8 @@
 						<td th:text="${member.totalorder}"></td>
 						<td class = "ui input focus"><input id = "memberlevel" type="text" th:value="${member.level}"></td>
 						<td>
-							<a href="#"><i class="edit outline icon primary" id="leveleditbtn"></i></a>
-							<a href="#"><i class="trash alternate outline icon red" id="leveldeletebtn"></i></a>
+							<i style ="cursor:pointer" class="edit outline icon primary" id="leveleditbtn"></i>
+							<i style ="cursor:pointer" class="trash alternate outline icon red" id="leveldeletebtn"></i>
 						</td>
 					</tr>
 			  </tbody>

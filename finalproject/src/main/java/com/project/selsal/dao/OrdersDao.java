@@ -39,7 +39,9 @@ public interface OrdersDao {
 	
 	public ArrayList<Orders> selectAll();
 	
-	public ArrayList<Orders> orderselectAll(String email);
+	public int deleteOrderDetail(int ordernum);
+	
+	public int updateOrderConfirm(int ordernum);
 	
 	public int changeConfirm(int ordernum);
 	
