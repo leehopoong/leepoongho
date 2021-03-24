@@ -243,8 +243,16 @@ div {
 	float: left;
 }
 
+#memberfind{
+	padding:8px 4px 0 78%;
+}
 
 
-
+#tlqkffjadk{
+	max-width:50px;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+	
+}
 
 

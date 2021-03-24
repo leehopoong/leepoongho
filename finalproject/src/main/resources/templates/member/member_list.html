@@ -5,11 +5,11 @@
    layout:decorator="layout/layout.html">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>관리자 페이지</title>
+<title>회원관리</title>
 </head>
 
 <body layout:fragment="content">
-   <form id="adminlistform" name="adminlist" method="POST">
+   <form id="adminlistform" name="memberfind" action="memberfind" method="POST">
    <div class="ui icon message" id="successmsg" >
 			<i class="notched circle loading icon"></i>
 			<div class="content">
@@ -19,7 +19,13 @@
       <div class="ui grid main">
       
          <div class="ui grid sixteen wide column">
-            <p id="titleWord">회원관리
+            <p id="titleWord">회원관리</p>
+            <div class="ui action input" id = "memberfind">
+            	<input type="text" name="memfind" placeholder="회원이름" th:value="${memfind}">
+  					<button class="ui icon button" onclick ="adminlistform.submit()">
+    					<i class="search icon" ></i>
+  					</button>
+  			</div>
          </div>
          
          
@@ -59,6 +65,11 @@
 					</tr>
 			  </tbody>
 			</table>
+			<div class = "pagination" style="text-align: center;">
+						<span th:each="page:${pages}"> 
+							<a th:href="@{memberfind(page=${page})}"><span th:text="${page}+'&nbsp&nbsp&nbsp&nbsp'" tabindex="0"></span></a>
+						</span>
+					</div>
 			<div class="ui mini modal delete">
 				<i class="close icon"></i>
 				<div class="header">삭제하시겠습니까 ?</div>

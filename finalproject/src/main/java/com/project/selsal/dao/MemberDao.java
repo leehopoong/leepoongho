@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import com.project.selsal.entities.Member;
+import com.project.selsal.entities.Memberlistfind;
 import com.project.selsal.entities.Orderdetail;
 import com.project.selsal.entities.Orders;
 
@@ -19,6 +20,10 @@ public interface MemberDao {
 	public int updateRow(Member member);
 	
 	public int updateAjax(Member member);
+	
+	public int memberlistfinder(Memberlistfind listfind);
+	
+	ArrayList<Member> findListMember(Memberlistfind listfind);
 	
 	public int deleteorders(int ordernum) throws Exception;
 

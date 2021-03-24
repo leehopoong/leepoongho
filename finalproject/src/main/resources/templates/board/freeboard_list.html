@@ -31,7 +31,7 @@
 					</select >
 				</div>
 				<div class = "fluid ui labeled input" >
-					<table class="ui celled table">
+					<table class="ui celled table freeboardlisttable">
 						<thead>
 							<tr style="text-align: center">
 								<th>번호</th>
@@ -45,9 +45,9 @@
 							<tr th:each="board : ${boards}">
 								<td th:text="${board.f_seq}" style="text-align: center"></td>
 								<td th:text="${board.f_name}"></td>
-								<td>
+								<td id = "ahffk">
 									<a th:href="@{freeBoardDetail(f_seq=${board.f_seq})}">
-										<span th:text="${board.f_title}"></span>
+										<span th:text="${board.f_title}" ></span>
 									</a>
 								</td>
 								<td style="text-align: center">

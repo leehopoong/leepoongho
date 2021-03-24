@@ -61,7 +61,7 @@ public class BoardController {
 	public String freeboardWriteSave(Model model, @ModelAttribute Freeboard freeboard,
 			@RequestParam("f_attachfile") MultipartFile f_attachfile, HttpServletRequest request) throws Exception {
 		String filename = f_attachfile.getOriginalFilename();
-		String path = "F:/SPRINGBOOTPROJECT/finalproject/src/main/resources/static/uploadattaches/";
+		String path = "C:/Users/IT-5C/git/leepoongho/finalproject/src/main/resources/static/uploadattaches/";
 		String realpath = "/uploadattaches/";
 		if (!filename.equals("")) {
 			byte bytes[] = f_attachfile.getBytes();
@@ -261,10 +261,10 @@ public class BoardController {
 
 		request.setCharacterEncoding("UTF-8");
 		File file = new File(
-				"F:/SPRINGBOOTPROJECT/finalproject/src/main/resources/static/"
+				"C:/Users/IT-5C/git/leepoongho/finalproject/src/main/resources/static/uploadattaches/"
 						+ f_attach);
 		String oriFileName = file.getName();
-		String filePath = "F:/SPRINGBOOTPROJECT/finalproject/src/main/resources/static/uploadattaches/";
+		String filePath = "C:/Users/IT-5C/git/leepoongho/finalproject/src/main/resources/static/uploadattaches/";
 		InputStream in = null;
 		OutputStream os = null;
 		File newfile = null;

@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.project.selsal.dao.MemberDao;
 import com.project.selsal.dao.OrdersDao;
 import com.project.selsal.entities.Member;
+import com.project.selsal.entities.Memberlistfind;
 import com.project.selsal.entities.Orderdetail;
 import com.project.selsal.entities.Orders;
 
@@ -42,21 +43,22 @@ public class MemberController {
 	Member member;
 	@Autowired
 	Orders orders;
-
+	@Autowired
+	Memberlistfind listfind;
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index(Locale locale, Model model) {
 		return "index";
 	}
 	
 	
-	
+	//---------------로그인페이지 접속
 	@RequestMapping(value = "/memberLogin", method = RequestMethod.GET)
 	public String memberLogin(Locale locale, Model model) {
 		
 		return "login/login";
 	}
 	
-	
+	//---------------회원로그인
 	@RequestMapping(value = "/memberLoginUP", method = RequestMethod.POST)
 	public String memberLoginUP(Locale locale, Model model, @ModelAttribute Member member, HttpSession session)throws Exception {
 		MemberDao dao = sqlSession.getMapper(MemberDao.class);
@@ -77,6 +79,8 @@ public class MemberController {
 		}
 
 	}
+	
+	//---------------아이디찾기
 	@RequestMapping(value = "/IdFindUP", method = RequestMethod.POST)
 	@ResponseBody
 	public String IdFindUP(Model model,@RequestParam String name,@RequestParam int birth,@RequestParam int gender) throws Exception {
@@ -85,18 +89,19 @@ public class MemberController {
 		return email;
 	}
 	
+	//---------------로그아웃
 	@RequestMapping(value = "/memberlogout", method = RequestMethod.GET)
 	public String memberlogout(HttpSession session) {
 		session.invalidate();
 		return "index";
 	}
-	
+	//---------------회원가입 페이지 접속
 	@RequestMapping(value = "/memberInsert", method = RequestMethod.GET)
 	public String memberInsert() {
 		return "member/member_insert";
 	}
 	
-	
+	//---------------회원가입하기
 	@RequestMapping(value = "/memberInsertSave", method = RequestMethod.POST)
 	public String memberInsertSave(Model model,@ModelAttribute Member member ) {
 		MemberDao daomember = sqlSession.getMapper(MemberDao.class);
@@ -109,6 +114,7 @@ public class MemberController {
 		
 		return "index";
 	}
+	//---------------마이페이지
 	@RequestMapping(value = "/membermypage", method = RequestMethod.GET)
 	public String membermypage(Locale locale, Model model,HttpSession session) throws Exception {
 		MemberDao dao = sqlSession.getMapper(MemberDao.class);
@@ -123,6 +129,8 @@ public class MemberController {
 		model.addAttribute("members", members);
 		return "member/member_mypage";
 	}
+	
+	//---------------주문취소 js연동
 	@RequestMapping(value = "/deleteordersAjax", method = RequestMethod.POST)
 	@ResponseBody
 	public String deleteordersAjax(@RequestParam int ordernum) throws Exception {
@@ -130,7 +138,7 @@ public class MemberController {
 		dao.deleteorders(ordernum);
 		return "redirect:membermypage";
 	}
-	
+	//---------------주문내역서 
 	@RequestMapping(value = "/memberMypagedetail", method = RequestMethod.GET)
 	public String memberMypagedetail(Model model,HttpSession session,@RequestParam int ordernum) throws Exception {
 		MemberDao memberdao = sqlSession.getMapper(MemberDao.class);
@@ -145,6 +153,8 @@ public class MemberController {
 		model.addAttribute("orderpageing",orderpageing);
 		return "member/member_mypagedetail";
 	}
+	
+	//--------------- 주문내역서에서 마이페이지로 넘어가는 버튼
 	@RequestMapping(value = "/detailmypage", method = RequestMethod.GET)
 	public String detailmypage(){
 		return "redirect:membermypage";
@@ -152,7 +162,7 @@ public class MemberController {
 	
 	
 	
-	
+	//---------------회원리스트
 	@RequestMapping(value = "/memberList", method = RequestMethod.GET)
 		public String memberList(Locale locale,Model model) {
 		MemberDao dao = sqlSession.getMapper(MemberDao.class);
@@ -161,6 +171,39 @@ public class MemberController {
 		return "member/member_list";
 	}
 	
+	//---------------회원찾기
+	@RequestMapping(value = "/memberfind", method = RequestMethod.POST)
+	public String memberfind(Locale locale, Model model,@RequestParam String memfind) throws Exception {
+		MemberDao dao = sqlSession.getMapper(MemberDao.class);
+		
+		int pagesize = 10;
+		int page = 1;
+		int startrow = (page-1) * pagesize;
+		int endrow = 10;
+		listfind.setMemfind(memfind);
+		if(listfind.getMemfind() == null) {
+			listfind.setMemfind("");
+		}
+		listfind.setMemstartrow(startrow);
+		listfind.setMemendrow(endrow);
+		int memcount = dao.memberlistfinder(listfind);
+		int countPage = 1;
+		if(memcount % pagesize == 0){
+			countPage = 0;
+		}
+		int membercount = memcount / pagesize + countPage;
+		int pages[] = new int[membercount];
+		for(int i = 0; i <membercount;i++) {
+			pages[i] = i+1;
+		}
+		ArrayList<Member> members = dao.findListMember(listfind);
+		model.addAttribute("members",members);
+		model.addAttribute("pages",pages);
+		model.addAttribute("find",memfind);
+		return "member/member_list";
+	}
+	
+	//---------------회원정보 수정
 	@RequestMapping(value = "/memberUpdate", method = RequestMethod.GET)
 	public String memberUpdate(Locale locale, Model model, HttpSession session) throws Exception {
 		String email = (String) session.getAttribute("sessionemail");
@@ -179,6 +222,7 @@ public class MemberController {
     	return "redirect:membermypage";
 	}
 	
+	//---------------관리자에서 회원정보 들어가기
 
 	@RequestMapping(value = "/adminUpdate", method = RequestMethod.GET)
 	public String adminUpdate(Locale locale, Model model, @RequestParam String email, HttpSession session) throws Exception {
@@ -188,6 +232,7 @@ public class MemberController {
 		return "member/member_updateAdmin";
 	}
 	
+	//---------------관리자가 회원정보 수정하기
 	@RequestMapping(value = "/memberUpdateAdminSave", method = RequestMethod.POST)
     public String memberUpdateAdminSave( Model model,HttpSession session, @ModelAttribute Member member) throws IOException {  
       MemberDao dao = sqlSession.getMapper(MemberDao.class);
@@ -211,7 +256,7 @@ public class MemberController {
        return "redirect:memberList";
    }
 	
-	
+	//--------------- 이메일 중복확인
 	@RequestMapping(value = "/emailConfirmAjax", method = RequestMethod.POST)
 	@ResponseBody
 	public String emailConfirmAjax(@RequestParam String email) throws Exception {
@@ -225,6 +270,7 @@ public class MemberController {
 		return row;
 	}
 	
+	//---------------회원리스트에서정보 수정
 	@RequestMapping(value = "/memberUpdateAjax", method = RequestMethod.POST)
 	@ResponseBody
 	public String memberUpdateAjax(@RequestParam String email,int level) throws Exception {
@@ -239,6 +285,7 @@ public class MemberController {
 			return "n";
 		}
 	}
+	//---------------회원삭제
 	@RequestMapping(value = "/memberDeleteAjax", method = RequestMethod.POST)
 	@ResponseBody
 	public String memberDeleteAjax(@RequestParam String email) throws Exception {
@@ -254,11 +301,12 @@ public class MemberController {
 	}
 	
 	
+	//---------------비밀번호 암호화
 	private String hashPassword(String plainTextPassword) {
 		
 		return BCrypt.hashpw(plainTextPassword, BCrypt.gensalt());
 	}
-	
+	//---------------비번번호 찾기
 	@RequestMapping(value = "/PWFindUP", method = RequestMethod.POST)
 	@ResponseBody
 	public String PWFindUP(Model model,@RequestParam String email,@RequestParam int birth,@RequestParam int gender) throws Exception {
@@ -273,7 +321,7 @@ public class MemberController {
 		}
 		return result;
 	}
-	
+	//---------------비밀번호 수정
 	@RequestMapping(value = "/PwdUpdate", method = RequestMethod.POST)
 	@ResponseBody
 	public String PwdUpdate(Model model,@RequestParam String email,@RequestParam String newPwd) throws Exception {
