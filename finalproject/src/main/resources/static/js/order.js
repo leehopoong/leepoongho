@@ -1,3 +1,26 @@
+var checkUnload = true;
+function pageOut() {
+   checkUnload = true;
+    $(window).on("beforeunload", function () {
+	if(checkUnload){
+    var ordernum = $('#ordernum').val();
+	$.ajax({
+            type: 'POST',
+            datatype: 'json',
+          	data:{ordernum:ordernum},
+            url: 'orderpageout',
+            success: function(data) {
+				alert('주문중인 정보는 삭제됩니다.');
+
+			},
+            error: function(xhr, status, error) {
+         		alert('ajax error : ' + xhr.status + error);
+            }
+      });
+	
+}
+    });
+}
 
 $(document).ready(function() {
    /** 관리자 주문 들어온 리스트에서 주문 접수처리하는 Script */
@@ -75,12 +98,13 @@ $(document).ready(function() {
          url: 'orderInsert',
          success: function(data) {
             alert("담기가 완료되었습니다.");
+         checkUnload = false;
+         document.location.href = "orderReloading?ordernum="+ordernum;
          },
          error: function(xhr, status, error) {
             alert('ajax error : ' + xhr.status + error);
          }
       });
-
    });
    
    /** 온라인 주문 페이지 주문 접수 */
@@ -93,6 +117,7 @@ $(document).ready(function() {
             url: 'orderConfirm',
             success: function(data) {
                alert("주문이 완료되었습니다.");
+				checkUnload = false;
             document.location.href = "membermypage";
             },
             error: function(xhr, status, error) {
@@ -126,47 +151,18 @@ $(document).ready(function() {
       scrollY: 360,
       scrollCollapse: true
    });
-   $('#product1').on('mouseover',function(){
-      $('#afterproduct1').css('display','block');
-      $('#afterproduct1').css('opacity','100');
+     $('.detailproduct').on('mouseover',function(){
+      var num = $(this).attr('data-num')
+      $('#proimage'+num).css('display','none');
+      $('#afterproduct'+num).css('display','block');
+     $('#afterproduct'+num).css('opacity','100');
    });
    
-     $('#product1').on('mouseleave',function(){
-         $('#afterproduct1').css('display','none');
-         $('#afterproduct1').css('opacity','0');
-      });
-   
-      $('#product2').on('mouseover',function(){
-         $('#afterproduct2').css('display','block');
-         $('#afterproduct2').css('opacity','100');
-      });
-   
-      $('#product2').on('mouseleave',function(){
-         $('#afterproduct2').css('display','none');
-         $('#afterproduct2').css('opacity','0');
-      });
-   
-      $('#product3').on('mouseover',function(){
-         $('#afterproduct3').css('display','block');
-         $('#afterproduct3').css('opacity','100');
-      });
-   
-     $('#product3').on('mouseleave',function(){
-         $('#afterproduct3').css('display','none');
-         $('#afterproduct3').css('opacity','0');
-      });
-   
-      $('#product4').on('mouseover',function(){
-         $('#afterproduct4').css('display','block');
-         $('#afterproduct4').css('opacity','100');
-      });
-   
-      $('#product4').on('mouseleave',function(){
-         $('#afterproduct4').css('display','none');
-         $('#afterproduct4').css('opacity','0');
-      });
-   
-
-
+   $('.detailproduct').on('mouseleave',function(){
+      var num = $(this).attr('data-num')
+     $('#proimage'+num).css('display','block');
+      $('#afterproduct'+num).css('display','none');
+      $('#afterproduct'+num).css('opacity','0');
+   });
 
 })

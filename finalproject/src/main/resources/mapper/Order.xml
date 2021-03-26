@@ -14,7 +14,13 @@
       (select name from product where code = #{procode}),
       (select saleprice from product where code = #{procode})*#{qty},#{qty}      
       )
+      ON DUPLICATE KEY UPDATE
+      proprice = proprice+(select saleprice from product where code = #{procode})*#{qty},
+      qty = qty+#{qty}
+      
    </insert>
+   
+   
    
    <select id="selectAddress" resultType="com.project.selsal.entities.Member">
       select zipcode,address,detailaddress from member where email = #{email};
@@ -37,7 +43,6 @@
       select ifnull(max(ordernum)+1,1) from orders;
    </select>
    
-   
    <insert id="insertRow2">
       insert productdetail(
       seq,code,name,transdate
@@ -46,7 +51,7 @@
       #{name},now()
       )
    </insert>
-      
+
    <select id="selectdetailAll" resultType="com.project.selsal.entities.ProductDetail">
       select * from productdetail where code =#{code} order by transdate desc
    </select>

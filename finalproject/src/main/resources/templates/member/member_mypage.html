@@ -34,15 +34,17 @@
 							<span>개인정보 변경</span></button>
 						</div>
 					</div>
-				<div class = "myInfo_inside2">
-					<dl class = "myInfo_pointtext">
-						<dt id = "dtid">포인트</dt>
-						<dd id = "pointimage">
-						<div id ="pointText">
-							<span th:text = "${data.point}"></span>
-						</div>
-					</dl>
-				</div>
+<!-- 				<div class = "myInfo_inside2"> -->
+<!-- 					<dl class = "myInfo_pointtext"> -->
+<!-- 						<dt id = "dtid">포인트</dt> -->
+<!-- 						<dd id = "pointimage" th:if ="${pointer == 0}">0 -->
+<!-- 						<dd id = "pointimage"  th:text = "${pointer}"> -->
+						
+<!-- 						<div id ="pointText"> -->
+<!-- 							<span th:text = "${data.point}"></span> -->
+<!-- 						</div> -->
+<!-- 					</dl> -->
+<!-- 				</div> -->
 				<div class = "box">
 					<span th:if ="${couponcount}%12 == 0">
 						<img th:if ="${couponcount} == 0" class = "back" src="images/stampcoupon.png" id="coupon0">

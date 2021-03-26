@@ -21,11 +21,15 @@ public interface MemberDao {
 	
 	public int updateAjax(Member member);
 	
+	public ArrayList<Orderdetail> orderCart(int ordernum);
+	
 	public int memberlistfinder(Memberlistfind listfind);
 	
 	ArrayList<Member> findListMember(Memberlistfind listfind);
 	
 	public int deleteorders(int ordernum) throws Exception;
+	
+	public Orders pointsum(String email) throws Exception;
 
 	public ArrayList<Member> selectAll();
 	
