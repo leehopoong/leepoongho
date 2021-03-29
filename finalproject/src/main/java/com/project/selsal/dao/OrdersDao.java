@@ -16,7 +16,9 @@ public interface OrdersDao {
 	// 온라인 주문 선택한 재료 담기 Dao
 	public int insertRow(Orderdetail orderdetail);
 	
-
+	public int currentOrderNum();
+	
+	public ArrayList<Orderdetail> orderdetailspage(int ordernum);
 	
 	// 온라인 주문 위한 재교매진여부 확인 Dao
 	public int productCount();

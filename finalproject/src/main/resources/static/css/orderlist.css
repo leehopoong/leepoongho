@@ -186,5 +186,53 @@ caption {
 #detailmypage{
 	padding: 15px 0px 10px 1050px;
 }
-	
 
+#ordernameCss{
+	width:180px;
+}
+
+#order_confirmID input{
+	height: 22px;
+    padding: 0 0 0 9px;
+    border: 1px solid #d5d5d5;
+    line-height: 22px;
+    color: #676d74;
+    text-decoration: none;
+    outline: medium none;
+}
+
+
+#orderaddressCss{
+	width: 60px;
+    padding: 0;
+    text-align: center;
+}
+#orderaddressCss2{
+	width: 450px;
+    margin: 5px 0 0;
+}
+#orderaddressCss3{
+	width: 450px;
+    margin: 5px 0 0;
+}
+#orderphoneCss{
+	width: 60px;
+    margin: 0 4px;
+}
+#orderphoneCss2{
+	width: 60px;
+    margin: 0 4px;
+}
+#orderphoneCss3{
+	width: 60px;
+    margin: 0 4px;
+}
+
+#orderemailCss{
+	width: 330px;
+    margin: 0 4px;
+}
+#ordermassegeCss{
+	width: 750px;
+    height: 100px;
+}

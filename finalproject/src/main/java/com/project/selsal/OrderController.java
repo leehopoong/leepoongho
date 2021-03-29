@@ -65,11 +65,23 @@ public class OrderController {
       return "order/order_insert";
    }
    
+   @RequestMapping(value = "/ordercartdelete", method = RequestMethod.POST)
+   @ResponseBody
+   public String ordercartdelete(Model model,@RequestParam String proname) throws Exception {
+      MemberDao memberDao = sqlSession.getMapper(MemberDao.class);
+      OrdersDao orderDao = sqlSession.getMapper(OrdersDao.class);
+      int orderNum = orderDao.currentOrderNum();
+      memberDao.deleteOrderCart(orderNum,proname);
+      return "";
+   }
+   
+   
    @RequestMapping(value = "/orderpageout", method = RequestMethod.POST)
    @ResponseBody
    public String orderpageout(@RequestParam int ordernum) {
 	   OrdersDao orderDao = sqlSession.getMapper(OrdersDao.class);
 	   orderDao.deleteOrderDetail(ordernum);
+	   
       return "";
    }
    @RequestMapping(value = "/orderReloading", method = RequestMethod.GET)
@@ -81,6 +93,11 @@ public class OrderController {
       model.addAttribute("ordernum",ordernum);
       ArrayList<Orderdetail> cart = memberDao.orderCart(ordernum);
       model.addAttribute("cart",cart);
+      int totprices = 0;
+      for(Orderdetail a : cart) {
+    	  totprices = totprices + a.getProprice();
+      }
+      model.addAttribute("totprices",totprices);
       
       return "order/order_insert";
    }
@@ -233,6 +250,21 @@ public class OrderController {
       ArrayList<Product> products = productDao.selectAll();
       model.addAttribute("products",products);
       return "order/ingredient_detail";
+   }
+   @RequestMapping(value = "/orderconfirms", method = RequestMethod.GET)
+   public String orderconfirms(Model model,HttpSession session,@RequestParam int ordernum) throws Exception {
+	   MemberDao memberDao = sqlSession.getMapper(MemberDao.class);
+	   OrdersDao orderDao = sqlSession.getMapper(OrdersDao.class);
+	   String email = (String) session.getAttribute("sessionemail");
+	   Member members = memberDao.selectOne(email);
+	   Orders orderpagetot = memberDao.orderselectOne(ordernum);
+	   ArrayList<Orderdetail> trytoorder = memberDao.ordernumselect(ordernum);
+	   model.addAttribute("members",members);
+	   model.addAttribute("orderpagetot",orderpagetot);
+	   model.addAttribute("trytoorder",trytoorder);
+	   
+
+      return "order/order_confirm";
    }
 
 }
