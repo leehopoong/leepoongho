@@ -21,6 +21,8 @@ public interface MemberDao {
 	
 	public int updateAjax(Member member);
 	
+	public ArrayList<Orders> orderslimit(String email);
+	
 	public ArrayList<Orderdetail> orderCart(int ordernum);
 	
 	public int memberlistfinder(Memberlistfind listfind);

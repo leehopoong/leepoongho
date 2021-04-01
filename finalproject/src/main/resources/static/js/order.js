@@ -112,21 +112,36 @@ $(document).ready(function() {
    
    /** 온라인 주문 페이지 주문 접수 */
    $('#orderconfirm').on('click',function(){
-      var ordernum = $('#ordernum').val();
-      $.ajax({
-            type: 'POST',
-            datatype: 'json',
-            data:{ordernum:ordernum},
-            url: 'orderConfirm',
-            success: function(data) {
-               alert("주문이 완료되었습니다.");
-				checkUnload = false;
-            document.location.href = "orderconfirms?ordernum="+ordernum;
-            },
-            error: function(xhr, status, error) {
-               alert('ajax error : ' + xhr.status + error);
-            }
-      });
+         var ordernum = $('#ordernum').val();
+         checkUnload = false;
+      document.location.href = "orderConfirm?ordernum="+ordernum;           
+   });
+
+   $('#ordernameCss2').keyup(function(){
+      var usePoint = $('#ordernameCss2').val();
+      var totPoint = $('#maxPoint').val();
+      var orderPrice = $('#orderPrice').text();
+      var totPrice = orderPrice-usePoint;
+      if(totPoint-usePoint <= 0){
+         if(orderPrice-totPoint>0){
+            $('#ordernameCss2').val(totPoint);
+            $('#totalPrice').text(orderPrice-totPoint);
+            $('#orderPoint').text(totPoint);
+            $('#paymentstrong1').text(orderPrice-totPoint);
+         }else{
+            $('#ordernameCss2').val(orderPrice);
+            $('#orderPoint').text(orderPrice);
+            $('#totalPrice').text(0);
+            $('#paymentstrong1').text(0);
+			
+         }
+      }
+      else{
+         $('#orderPoint').text(usePoint);
+         $('#totalPrice').text(totPrice);
+         $('#paymentstrong1').text(orderPrice-usePoint);
+      }
+      
    });
    
    /** 온라인 주문 페이지 주문 취소 */
@@ -167,7 +182,7 @@ $(document).ready(function() {
       $('#afterproduct'+num).css('display','none');
       $('#afterproduct'+num).css('opacity','0');
    });
-	$(document).on('click', '#tableid td #ordercarticon', function() {
+   $(document).on('click', '#tableid td #ordercarticon', function() {
       var row = $(this).closest('tr');
       var td = row.children();
       var ordernum = td.eq(0).text();
@@ -191,17 +206,27 @@ $(document).ready(function() {
          }
       });
    })
-	$('#detailcheckbox').on('click',function(){
-		$('.mypagedetailtable1').css('display','none');
-		$('.mypagedetailtable2').css('display','block');
-	});
-	$('#checkednew').on('click',function(){
-		$('.mypagedetailtable2').css('display','none');
-		$('.mypagedetailtable3').css('display','block');
-	})
-	$('#detailcheckbox2').on('click',function(){
-		$('.mypagedetailtable3').css('display','none');
-		$('.mypagedetailtable2').css('display','block');
-	})
+   $('#detailcheckbox').on('click',function(){
+	$('#ordernameCss').val($('#orignname').text());
+	$('.orderaddressCss').val($('#orignzipcode').text());
+	$('.orderaddressCss2').val($('#orignaddress').text());
+	$('.orderaddressCss3').val($('#origndetailaddress').text());
+	$('#orderphoneCss').val($('#orignpone1').text());
+	$('#orderphoneCss2').val($('#orignpone2').text());
+	$('#orderphoneCss3').val($('#orignpone3').text());
+	$('#orderemailCss').val($('#orignemail').text());
+	
+   });
+
+   $('#checkednew').on('click',function(){
+	$('#ordernameCss').val("");
+	$('.orderaddressCss').val("");
+	$('.orderaddressCss2').val("");
+	$('.orderaddressCss3').val("");
+	$('#orderphoneCss').val("");
+	$('#orderphoneCss2').val("");
+	$('#orderphoneCss3').val("");
+	$('#orderemailCss').val("");
+   });
 
 })

@@ -9,9 +9,10 @@
 </head>
 
 <body layout:fragment="content">
-   <form id="order_confirmID" name="" method="POST">
-      <div class="ui grid main">
+   <form id="order_confirmID" name="orderConfirmSave" action="orderConfirmSave" method="POST">
+      <div class="ui grid main" onclick="checkUnload">
          <div class="ui grid sixteen wide column">
+         	<input type="hidden" name="ordernum" id="ordernum" th:value="${ordernum}">
             <p id="titleWord2">주문서 작성
          </div>
          <div class = "mypagetetailtitle">
@@ -36,7 +37,7 @@
 					<tr class = "ordertot">
 						<td id ="totfinal">
 							<strong>총주문금액</strong>
-							<strong th:text = "${orderpagetot.totprice}"></strong>
+							<strong th:text = "${totPrice}"></strong>
 						</td>
 					</tr>
 				</table>
@@ -45,84 +46,32 @@
 					<tbody id = "ordermemo">
 						<tr>
 							<th>주문인 성함</th>
-							<td th:text = "${members.name}"></td>
+							<td id = "orignname" th:text = "${members.name}"></td>
 						</tr>
 						<tr>
 							<th>주소</th>
-							<td><span th:text = "${members.zipcode}"></span><br>
-								<span th:text = "${members.address}">주소</span><br>
-								<span th:text = "${members.detailaddress}">상세주소</span>
+							<td><span id = "orignzipcode" th:text = "${members.zipcode}"></span><br>
+								<span id = "orignaddress" th:text = "${members.address}">주소</span><br>
+								<span id = "origndetailaddress" th:text = "${members.detailaddress}">상세주소</span>
 							</td>
 						</tr>
 						<tr>
 							<th>휴대전화</th>
-							<td th:text = "|${members.phone1}-${members.phone2}-${members.phone3}|" ></td>
+							<td>
+								<span id = "orignpone1" th:text ="${members.phone1}"></span>-
+								<span id = "orignpone2" th:text ="${members.phone2}"></span>-
+								<span id = "orignpone3" th:text ="${members.phone3}"></span>
+							</td>
+							
 						</tr>
 						<tr>
 							<th>이메일주소</th>
-							<td th:text = "${members.email}"></td>
-						</tr>
-						<tr>
-							<th></th>
-							<td ></td>
+							<td id = "orignemail" th:text = "${members.email}"></td>
 						</tr>
 					</tbody>
 				</table>
 				<h3>배송지정보</h3>
-				<table id = "mypagedetailtable" class = "mypagedetailtable1">
-					<tbody id = "ordermemo">
-						<tr>
-							<th>배송지선택</th>
-							<td>
-								<div class="ui form"  >
-									<div class="grouped fields">
-										<div class="field">
-											<div class="ui radio checkbox">
-												<input type="radio" name="example2"  id = "detailcheckbox">
-												<label>회원정보와 동일</label>
-											</div>
-										</div>
-									</div>
-								</div>
-							</td>
-					    </tr>
-					    <tr>
-					    	<th>받으시는분</th>
-					    	<td >
-					    		<input type = "text"  id = "ordernameCss">
-					    	</td>
-					    </tr>
-					    <tr>
-					    	<th>주소</th>
-					    	<td >
-					    		<input type = "text" id = "orderaddressCss"  ></input><br>
-					    		<input type = "text"  id = "orderaddressCss2" >주소<br>
-					    		<input type = "text"  id = "orderaddressCss3" >상세주소
-					    	</td>
-					    </tr>
-					    <tr>
-					    	<th>핸드폰번호</th>
-					    	<td >
-				    			<input type = "text" id = "orderphoneCss" maxlength="3">-
-				    			<input type = "text" id = "orderphoneCss2" maxlength="4">-
-				    			<input type = "text" id = "orderphoneCss3" maxlength="4">
-					    	</td>
-					    </tr>
-					    <tr>
-					    	<th>이메일</th>
-					    	<td >
-					    		<input type = "text" id = "orderemailCss" >
-					    	</td>
-					    </tr>
-					    <tr>
-					    	<th>배송메세지</th>
-					    	<td >
-					    		<textarea  id = "ordermassegeCss"  ></textarea>
-					    	</td>
-					    </tr>
-					</tbody>
-				</table>
-				<table id = "mypagedetailtable" class = "mypagedetailtable2" style = "display:none;">
+				<table id = "mypagedetailtable" class = "mypagedetailtable2" >
 					<tbody id = "ordermemo">
 						<tr>
 							<th>배송지선택</th>
@@ -131,8 +80,12 @@
 										<div class="grouped fields">
 											<div class="field">
 												<div class="ui radio checkbox">
-													<input type="radio" name="example3" id = "checkednew" >
+													<input type="radio"  id = "checkednew"  name="example2" >
 													<label>새로운 배송지 입력</label>
+												</div>
+												<div class="ui radio checkbox">
+													<input type="radio"  id = "detailcheckbox" name="example2"  >
+													<label>기존 정보와 동일</label>
 												</div>
 											</div>
 										</div>
@@ -142,28 +95,30 @@
 					    <tr>
 					    	<th>받으시는분</th>
 					    	<td>
-					    		<input type = "text"  th:value = "${members.name}"readonly id = "ordernameCss">
+					    		<input type = "text" id = "ordernameCss">
 					    	</td>
 					    </tr>
 					    <tr>
 					    	<th>주소</th>
 					    	<td>
-					    		<input type = "text"  th:value = "${members.zipcode}" id = "orderaddressCss"  readonly></input><br>
-					    		<input type = "text"  th:value = "${members.address}" id = "orderaddressCss2"  readonly>주소<br>
-					    		<input type = "text"  th:value = "${members.detailaddress}" id = "orderaddressCss3"  readonly>상세주소
+					    		<input type = "text"   class = "orderaddressCss"  id = "zipcode" ></input><br>
+					    		<input type = "text"   class = "orderaddressCss2" id = "addr1" >주소<br>
+					    		<input type = "text"   class = "orderaddressCss3" id = "addr2" >상세주소
+					    		<button type="button" name="" class="ui gray button adrrconfirm" onclick="zipcodeFind()">
+								<i class="search icon"></i></button>
 					    	</td>
 					    </tr>
 					    <tr>
 					    	<th>핸드폰번호</th>
-					    	<td><input type = "text" th:value = "${members.phone1}" id = "orderphoneCss" readonly>-
-					    		<input type = "text" th:value = "${members.phone2}" id = "orderphoneCss2" readonly>-
-					    		<input type = "text" th:value = "${members.phone3}" id = "orderphoneCss3" readonly>
+					    	<td><input type = "text" id = "orderphoneCss" >-
+					    		<input type = "text" id = "orderphoneCss2" >-
+					    		<input type = "text" id = "orderphoneCss3" >
 					    	</td>
 					    </tr>
 					    <tr>
 					    	<th>이메일</th>
 					    	<td>
-					    	<input type = "text" th:value = "${members.email}" id = "orderemailCss" readonly>
+					    	<input type = "text"  id = "orderemailCss" >
 					    	</td>
 					    </tr>
 					    <tr>
@@ -174,60 +129,84 @@
 					    </tr>
 					</tbody>
 				</table>
-				<table id = "mypagedetailtable" class = "mypagedetailtable3" style = "display:none">
-					<tbody id = "ordermemo">
+				<h3>결제 예정금액</h3>
+		        <table id = "ordermemo2">
+		       		<thead>
+		         		<tr>
+		         			<th>총 주문금액</th>
+		         			<th>총 할인</th>
+		         			<th>총 결제예정 금액</th>
+		         		</tr>
+		         	</thead>
+					<tbody>
 						<tr>
-							<th>배송지선택</th>
-							<td>
-								<div class="ui form"  >
-									<div class="grouped fields">
-										<div class="field">
-											<div class="ui radio checkbox">
-												<input type="radio" name="example2"  id = "detailcheckbox2">
-												<label>회원정보와 동일</label>
-											</div>
-										</div>
-									</div>
-								</div>
-							</td>
-					    </tr>
+							<td id="orderPrice" th:text = "${totPrice}"></td>
+							<td id="orderPoint"></td>
+							<td id="totalPrice" th:text = "${totPrice}"></td>
+						</tr>
+					</tbody>
+				</table>
+				<table id = "mypagedetailtable" >
+					<tbody id = "ordermemo">
 					    <tr>
-					    	<th>받으시는분</th>
-					    	<td >
-					    		<input type = "text"  id = "ordernameCss">
+					    	<th>총 할인금액</th>
+					    	<td style = "background-color:#fbfafa">
 					    	</td>
 					    </tr>
 					    <tr>
-					    	<th>주소</th>
-					    	<td >
-					    		<input type = "text" id = "orderaddressCss"  ></input><br>
-					    		<input type = "text"  id = "orderaddressCss2" >주소<br>
-					    		<input type = "text"  id = "orderaddressCss3" >상세주소
-					    	</td>
-					    </tr>
-					    <tr>
-					    	<th>핸드폰번호</th>
-					    	<td >
-				    			<input type = "text" id = "orderphoneCss" maxlength="3">-
-				    			<input type = "text" id = "orderphoneCss2" maxlength="4">-
-				    			<input type = "text" id = "orderphoneCss3" maxlength="4">
-					    	</td>
-					    </tr>
-					    <tr>
-					    	<th>이메일</th>
-					    	<td >
-					    		<input type = "text" id = "orderemailCss" >
-					    	</td>
-					    </tr>
-					    <tr>
-					    	<th>배송메세지</th>
-					    	<td >
-					    		<textarea  id = "ordermassegeCss"  ></textarea>
+					    	<th>포인트</th>
+					    	<td>
+					    		<input type="hidden"  id="maxPoint" th:value="${members.point}">
+					    		<input type = "text" id = "ordernameCss2" name="point" value = "0">포인트<span th:text="|(사용가능 포인트 : ${members.point}포인트)|"></span><br><br>
+					    		<span>
+					    		-포인트는 최소 1000 포인트 이상일 때 결제가 가능합니다.<br>
+					    		-최대 사용금액은 제한이 없습니다.<br>
+					    		-1회 구매시 적립금 최대 사용금액은 0원입니다.<br>
+					    		-적립금으로만 결제할 경우,결제금액이 0으로 보여지는 것은 정상이며[결제하기]버튼을 누르면 주문이 완료됩니다.
+					    		</span>
 					    	</td>
 					    </tr>
 					</tbody>
 				</table>
-				<div id="detailmypage"></div>
+				<h3>결제수단</h3>
+				<table id = "mypagedetailtable" >
+					<tbody id = "ordermemo3">
+					    <tr  >
+					    	<td rowspan= "2">
+					    		<div id = "ordermemoINmemo">무통장입금</div>
+					    		<div>
+					    			<table id = "mypagedetailtable">
+										<tbody id = "ordermemo3">
+					   						 <tr >
+					   						 	<th  style = "width:10%;background-color:#fbfafa">입금자명</th>
+					    						<td>
+					    							<input type = "text"  id = "ordernameing" th:value="${members.name}" readonly>
+					    						</td>
+					    					</tr>
+					    					<tr >
+					    						<th style = "background-color:#fbfafa">입금은행</th>
+					    						<td>
+					    							<input type = "text"  id = "orderbank" value="000-00-00000" readonly="readonly" >
+					    						</td>
+					    					</tr>
+										</tbody>
+									</table>
+								</div>
+					    	</td>
+					    	<td style = "background-color:#fbfafa;border-left:2px solid #d5d5d5;">
+					    		<div id = "paymentdiv">
+					    			<strong id = "paymentstrong">무통장 입금</strong>
+					    			<span>최종 결제금액</span>
+					    		</div>
+					    		<div id = "paymentdiv">
+					    			<strong id = "paymentstrong1" th:text = "${totPrice}">원</strong>
+					    			<span></span>
+					    		</div>
+					    		<div><button id = "paymentbutton" style = "cursor:pointer">결제하기</button></div>
+					    	</td>
+					    </tr>
+					</tbody>
+				</table>
 			</div>
          <div class = "ui grid two wide column"></div>
       </div>

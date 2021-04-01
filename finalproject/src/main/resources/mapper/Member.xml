@@ -38,7 +38,9 @@
     <select id = "couponcount" resultType= "Integer">
     	select count(*) from orders where email =#{email} and orderconfirm=1;
     </select>
-    
+    <select id = "selectCountorderlist">
+    	select count(*) from orders;
+    </select>
    <insert id="insertRow">
       insert into member (email,name,password,phone1,phone2,phone3,zipcode,address,detailaddress,totalorder,point,birth,gender)
       values(#{email},#{name},#{password},#{phone1},#{phone2},#{phone3},#{zipcode},#{address},#{detailaddress},#{totalorder},#{point},#{birth},#{gender})
@@ -51,8 +53,12 @@
       select * from member
    </select>
    
-      <select id="selectAllcount" resultType="Integer">
+   <select id="selectAllcount" resultType="Integer">
       select count(*) from member
+   </select>
+   
+   <select id = "orderslimit" resultType="com.project.selsal.entities.Orders">
+   	select * from orders where email=(select email from member where email = #{email}) order by ordernum desc limit 5
    </select>
    
    <update id="updateRow">
