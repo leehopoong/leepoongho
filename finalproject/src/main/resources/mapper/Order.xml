@@ -20,12 +20,16 @@
       
    </insert>
    
+   	<update id = "couponUPdate">
+		update orders set couponconfirm = '1' where email = (select * from(select email from orders where ordernum = #{ordernum})as a) and ordernum =#{ordernum};
+	</update>
+   
    <select id="currentOrderNum" resultType="Integer">
       select ifnull(max(ordernum),1) from orderdetail;
    </select>
    
    <select id="selectAddress" resultType="com.project.selsal.entities.Member">
-      select zipcode,address,detailaddress from member where email = #{email};
+      select zipcode,address,detailaddress from member where email = #{email} 
    </select>
    
    <insert id="orderInsert">

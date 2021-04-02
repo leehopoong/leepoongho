@@ -192,8 +192,16 @@ public class OrderController {
    @ResponseBody
    public String NowStockChk(@RequestParam int ordernum) {
       OrdersDao orderdao = sqlSession.getMapper(OrdersDao.class);
+      MemberDao memberdao = sqlSession.getMapper(MemberDao.class);
+      
       ArrayList<Product> stockchk = orderdao.selectNowStock(ordernum);
       String result = "";
+      orderdao.couponUPdate(ordernum);
+      int couponcount = memberdao.couponcount2();
+      if(couponcount == 12) {
+    	  memberdao.couponUpdate(ordernum);
+      }
+      System.out.println(ordernum);
       for(Product chk : stockchk) {
          if(chk.getOrderstock()==chk.getStock()) {
             result = "end";
@@ -211,6 +219,7 @@ public class OrderController {
    public String QuickorderConfirm(@RequestParam int ordernum,HttpSession session) throws Exception {
       OrdersDao orderDao = sqlSession.getMapper(OrdersDao.class);
       ProductDao productDao = sqlSession.getMapper(ProductDao.class);
+      
       orderDao.changeConfirm(ordernum);
       orderDao.completedateUpdate(ordernum);
       ArrayList<Orderdetail> saleproduct = orderDao.selectSaleProduct(ordernum);
@@ -246,7 +255,6 @@ public class OrderController {
          changelevel = 2;
       }
       orderDao.updateMemlevel(ordernum,changelevel);
-      
       
       return "redirect:OrderList";
    }

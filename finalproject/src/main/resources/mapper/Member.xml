@@ -13,11 +13,22 @@
 		select * from orders where ordernum=#{ordernum};
 	</select>
 	
+	<select id = "couponcount2" resultType = "Integer">
+		select count(*) from orders where orderconfirm = 1 and couponconfirm = 1
+	</select>
+	
+	
+	<update  id = "couponUpdate">
+		update orders set coupon = if(coupon = null ,coupon+1,1) where email = (select * from(select email from orders where ordernum = #{ordernum})as a);
+
+	</update>
+	
+	
+	
 	<select id = "orderCart" resultType="com.project.selsal.entities.Orderdetail">
 		select sum(qty) as qty,sum(proprice) as proprice,proname from orderdetail where ordernum = #{ordernum} group by proname,proprice
 	</select>
-		
-	
+
 	<select id = "memberlistfinder" resultType = "Integer">
 		select count(*) from member where email like CONCAT('%',#{memfind},'%')
 		or name like CONCAT('%',#{memfind},'%') order by name asc limit #{memstartrow},#{memendrow}

@@ -105,7 +105,6 @@ public class AdminController {
 		ProductDao productDao = sqlSession.getMapper(ProductDao.class);
 		int result = productDao.deleteAjax1(code);
 		productDao.deleteAjax2(code);
-		System.out.println(result);
 		if (result > 0) {
 			return "y";
 		} else {

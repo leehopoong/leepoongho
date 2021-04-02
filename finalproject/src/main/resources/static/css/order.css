@@ -236,3 +236,10 @@ img {vertical-align: middle;}
     border-top-right-radius:5px;
     border-top-left-radius:5px;
 }
+#adrrconfirmcss{
+	width:10px;
+	height:30px;
+}
+#adrrconfirmiconcss{
+	margin-right:30px;
+}
