@@ -20,9 +20,7 @@
       
    </insert>
    
-   	<update id = "couponUPdate">
-		update orders set couponconfirm = '1' where email = (select * from(select email from orders where ordernum = #{ordernum})as a) and ordernum =#{ordernum};
-	</update>
+   	
    
    <select id="currentOrderNum" resultType="Integer">
       select ifnull(max(ordernum),1) from orderdetail;

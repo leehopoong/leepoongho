@@ -21,9 +21,15 @@ public interface MemberDao {
 	
 	public int updateAjax(Member member);
 	
-	public int couponcount2();
+	public int couponcount2(int ordernum);
 	
-	public int couponUpdate(int ordernum);
+	public int couponUpdate2(String email);
+	
+	public int couponconfirmUpdate(String email);
+	
+	public int couponUPdate1(int ordernum);
+	
+	public int couponaccumulation(int ordernum,String email);
 	
 	public ArrayList<Orders> orderslimit(String email);
 	

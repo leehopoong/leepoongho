@@ -14,16 +14,27 @@
 	</select>
 	
 	<select id = "couponcount2" resultType = "Integer">
-		select count(*) from orders where orderconfirm = 1 and couponconfirm = 1
+		select count(*) from orders where orderconfirm = 1 and couponconfirm = 1 and email =(select email from(select email from orders where ordernum = #{ordernum})as a)
 	</select>
 	
 	
-	<update  id = "couponUpdate">
-		update orders set coupon = if(coupon = null ,coupon+1,1) where email = (select * from(select email from orders where ordernum = #{ordernum})as a);
+	<update  id = "couponUpdate2">
+		update member set coupon = (SELECT ifnull(MAX(coupon)+1,1 )) where email= #{email};
 
 	</update>
 	
 	
+	<update id = "couponconfirmUpdate">
+		update orders set couponconfirm = 2 where couponconfirm = 1 and email = #{email}
+	</update>
+	
+	<update id = "couponUPdate1">
+		update orders set couponconfirm = '1' where email = (select * from(select email from orders where ordernum = #{ordernum})as a) and ordernum =#{ordernum};
+	</update>
+	
+	<select id = "couponaccumulation" resultType = "Integer">
+		select totprice from orders where ordernum = #{ordernum} and email =#{email}
+	</select>
 	
 	<select id = "orderCart" resultType="com.project.selsal.entities.Orderdetail">
 		select sum(qty) as qty,sum(proprice) as proprice,proname from orderdetail where ordernum = #{ordernum} group by proname,proprice

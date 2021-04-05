@@ -49,7 +49,7 @@
 			  <tbody>
 			  <tr th:each="member : ${members}">
 						<td th:text="${member.name}"></td>
-						<td><a th:href="@{adminUpdate(email=${member.email})}" ><span th:text = "${member.email}"></span></a></td>
+						<td><a th:href="@{adminUpdate(email=${member.email})}" ><span th:text = "${member.email}" ></span></a></td>
 						<td th:text="|우편번호 ${member.zipcode} /${member.address},  ${member.detailaddress}|"></td>
 						<td th:text="|${member.phone1}-${member.phone2}-${member.phone3}|"></td>
 						<td th:if="${member.gender == 1 or member.gender == 3}">남자</td>

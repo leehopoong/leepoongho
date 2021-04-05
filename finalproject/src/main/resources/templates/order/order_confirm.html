@@ -163,6 +163,7 @@
                       <td>
                          <input type="hidden"  id="maxPoint" th:value="${members.point}">
                          <input type = "text" id = "ordernameCss2" name="point" value = "0">포인트<span th:text="|(사용가능 포인트 : ${members.point}포인트)|"></span><br><br>
+                         <button>쿠폰 사용하기</button><span style = "color:red" th:text = "|보유중인 쿠폰수[${members.coupon}] 개|"></span>
                          <span>
                          -포인트는 최소 1000 포인트 이상일 때 결제가 가능합니다.<br>
                          -최대 사용금액은 제한이 없습니다.<br>
