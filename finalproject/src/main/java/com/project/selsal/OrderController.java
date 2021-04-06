@@ -128,13 +128,17 @@ public class OrderController {
    
    //온라인주문 내역 최종 저장
    @RequestMapping(value = "/orderConfirmSave", method = RequestMethod.POST)
-   public String orderConfirmSave(@ModelAttribute Member member,@RequestParam int ordernum, HttpSession session) {
+   public String orderConfirmSave(@ModelAttribute Member member,@RequestParam int ordernum,@RequestParam int couponyn, HttpSession session) {
       OrdersDao orderDao = sqlSession.getMapper(OrdersDao.class);
+      MemberDao memberDao = sqlSession.getMapper(MemberDao.class);
       String email = (String) session.getAttribute("sessionemail");
       String address = "우편번호:"+ member.getZipcode()+" / "+member.getAddress()+" , "+member.getDetailaddress(); 
       int usePoint = member.getPoint();
       orderDao.orderInsert(ordernum, email,address);
       orderDao.usePoint(usePoint);
+      if(couponyn == 1){
+    	  memberDao.couponUpdate3(email);
+      }
       return "redirect:membermypage";
    }
    @RequestMapping(value = "/orderConfirm", method = RequestMethod.GET)
@@ -200,7 +204,7 @@ public class OrderController {
       memberdao.couponUPdate1(ordernum);
       int couponcount = memberdao.couponcount2(ordernum);
       int couponpoint = memberdao.couponaccumulation(ordernum, email);
-      if(couponpoint > 6000) {
+      if(couponpoint >= 6000) {
     	  couponcount = couponcount + 1;
     	  if(couponcount == 12) {
         	  memberdao.couponUpdate2(email);

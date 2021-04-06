@@ -29,6 +29,8 @@ public interface MemberDao {
 	
 	public int couponUPdate1(int ordernum);
 	
+	public int couponUpdate3(String email);
+	
 	public int couponaccumulation(int ordernum,String email);
 	
 	public ArrayList<Orders> orderslimit(String email);

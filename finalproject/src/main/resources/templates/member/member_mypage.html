@@ -37,9 +37,9 @@
 				<div class = "myInfo_inside2">
 					<dl class = "myInfo_pointtext">
 						<dt id = "dtid">포인트</dt>
-						<dd>
+						<dd id = "pointimage">
 						<div id ="pointText">
-							<span th:text = "${data.point}"></span>포인트
+							<span th:text = "${data.point}"></span>
 						</div>
 					</dl>
 				</div>
@@ -70,10 +70,11 @@
 									<th id = "thborder">주문날짜</th>
 									<th id = "thborder">금액</th>
 									<th id = "thborder">주문상태</th>
-									<th style = "width:150px">비고</th>
+									<th id = "thborder" >비고</th>
 								</tr>
 							</thead>
 							<tbody id = "orderbody">
+
 								<tr class = "orderbodyclass"  th:each="order:${orders}">
 									
 									<td id = "tdborder">

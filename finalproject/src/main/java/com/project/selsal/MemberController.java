@@ -147,7 +147,7 @@ public class MemberController {
       ArrayList<Member> members = dao.selectAll();
       Member data = dao.selectOne(email);
       int couponcount = dao.couponcount(email);
-      ArrayList<Orders> orders =  dao.orderslimit(email);
+      ArrayList<Orders> orders =  dao.orderselectAll(email);
       model.addAttribute("couponcount",couponcount);
       model.addAttribute("orders",orders);
       model.addAttribute("data",data);

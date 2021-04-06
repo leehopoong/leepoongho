@@ -23,6 +23,9 @@
 
 	</update>
 	
+	<update id = "couponUpdate3">
+		update member set coupon = coupon - 1 where email = #{email}
+	</update>
 	
 	<update id = "couponconfirmUpdate">
 		update orders set couponconfirm = 2 where couponconfirm = 1 and email = #{email}
@@ -52,6 +55,8 @@
    <select id="selectOne" resultType="com.project.selsal.entities.Member">
       select * from member where email = #{email}
     </select>
+    
+    
     
     <delete id ="deleteorders">
     	delete from orders where ordernum = #{ordernum}
