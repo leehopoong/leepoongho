@@ -23,8 +23,6 @@ import com.project.selsal.entities.Orderdetail;
 import com.project.selsal.entities.Orders;
 import com.project.selsal.entities.Product;
 
-import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
-
 
 
 
@@ -61,7 +59,15 @@ public class OrderController {
       ArrayList<Product> products = productDao.selectAll();
       model.addAttribute("products",products);
       OrdersDao orderDao = sqlSession.getMapper(OrdersDao.class);
-      int orderNum = orderDao.maxOrderNum();
+      int orderNum = 0;
+      int emptyNum = orderDao.emptyOrderNum();
+      int maxNum = orderDao.maxOrderNum();
+      if(emptyNum < maxNum) {
+    	  orderNum = emptyNum;
+      }
+      else {
+    	  orderNum = maxNum;
+      }
       model.addAttribute("ordernum",orderNum);
       ArrayList<Orderdetail> cart = memberDao.orderCart(orderNum);
       model.addAttribute("cart",cart);
@@ -110,11 +116,18 @@ public class OrderController {
    @ResponseBody
    public String orderInsert(Model model,@RequestParam int procode,@RequestParam int qty,@RequestParam int ordernum) {
       OrdersDao orderDao = sqlSession.getMapper(OrdersDao.class);
+      int productStock = orderDao.checkStock(procode);
       orderdetail.setOrdernum(ordernum);
       orderdetail.setQty(qty);
       orderdetail.setProcode(procode);
       orderDao.insertRow(orderdetail);
-      return "";
+      int orderProductStock = orderDao.checkQty(ordernum, procode);
+      if(productStock < orderProductStock) {
+    	  return "n";
+      } else {
+    	  return "y";
+      }
+      
    }
    
    //온라인주문하기 위한 재고 매진 여부 ajax
@@ -135,7 +148,7 @@ public class OrderController {
       String address = "우편번호:"+ member.getZipcode()+" / "+member.getAddress()+" , "+member.getDetailaddress(); 
       int usePoint = member.getPoint();
       orderDao.orderInsert(ordernum, email,address);
-      orderDao.usePoint(usePoint);
+      orderDao.usePoint(usePoint,email);
       if(couponyn == 1){
     	  memberDao.couponUpdate3(email);
       }
@@ -204,7 +217,7 @@ public class OrderController {
       memberdao.couponUPdate1(ordernum);
       int couponcount = memberdao.couponcount2(ordernum);
       int couponpoint = memberdao.couponaccumulation(ordernum, email);
-      if(couponpoint >= 6000) {
+      if(couponpoint > 6000) {
     	  couponcount = couponcount + 1;
     	  if(couponcount == 12) {
         	  memberdao.couponUpdate2(email);

@@ -146,38 +146,32 @@ $(document).ready(function() {
 			var name = $('#name').val();
 			var gender = $('#gender').val();
 			var birth = $('#birth').val();
-			$.ajax({
-				type: 'POST',
-				data: { name: name, gender: gender, birth: birth },
-				datatype: 'json',
-				url: 'IdFindUP',
-				success: function(data) {
-					if (!data) {
-						$('.ui.basic.modal.first').modal('hide');
-						$('.description').text("잘못된 정보입니다.")
-						$('.ui.mini.modal.second').modal('show');
-					} else {
-						$('.ui.basic.modal.first').modal('hide');
-						$('.description').text("회원님의 이메일은 " + data + " 입니다")
-						$('.ui.mini.modal.second').modal('show');
+			if (gender == 1 || gender == 3 || gender == 2 || gender == 4) {
+				$.ajax({
+					type: 'POST',
+					data: { name: name, gender: gender, birth: birth },
+					datatype: 'json',
+					url: 'IdFindUP',
+					success: function(data) {
+						if (!data) {
+							$('.ui.basic.modal.first').modal('hide');
+							$('.description').text("잘못된 정보입니다.")
+							$('.ui.mini.modal.second').modal('show');
+						} else {
+							$('.ui.basic.modal.first').modal('hide');
+							$('.description').text("회원님의 이메일은 " + data + " 입니다")
+							$('.ui.mini.modal.second').modal('show');
+						}
+					},
+					error: function(xhr, status, error) {
+						alert('ajax error : ' + xhr.status + error);
 					}
-				},
-				error: function(xhr, status, error) {
-					alert('ajax error : ' + xhr.status + error);
-				}
-			});
-		});
-	});
+				});
+			} else {
+				alert('올바론 숫자를 입력하세요(ex:1,2,3,4)')
+			}
 
-	$('.Signup').keyup(function() {
-		var gender = $('#gender').val();
-		if (gender == 1 || gender == 3) {
-		}
-		else if (gender == 2 || gender == 4) {
-		}
-		else {
-			alert('올바론 숫자를 입력하세요(ex:1,2,3,4)')
-		}
+		});
 	});
 
 	$('#passwordchk').keyup(function() {
@@ -200,17 +194,6 @@ $(document).ready(function() {
 		} else if (passwordchk != password) {
 			$('#newPwsame').css("display", "none")
 			$('#newPwdifferent').css("display", "block")
-		}
-	});
-
-	$('.Signup1').keyup(function() {
-		var gender = $('#PWgender').val();
-		if (gender == 1 || gender == 3) {
-		}
-		else if (gender == 2 || gender == 4) {
-		}
-		else {
-			alert('올바론 숫자를 입력하세요(ex:1,2,3,4)')
 		}
 	});
 
@@ -250,22 +233,27 @@ $(document).ready(function() {
 		var email = $('#PWemail').val();
 		var gender = $('#PWgender').val();
 		var birth = $('#PWbirth').val();
-		$.ajax({
-			type: 'POST',
-			data: { email: email, gender: gender, birth: birth },
-			datatype: 'json',
-			url: 'passwordFindUP',
-			success: function(data) {
-				if (data == "y") {
-					document.location.href = "passwordChange?email=" + email;
-				} else {
-					alert("일치하는 정보가 없습니다");
+		if (gender == 1 || gender == 3 || gender == 2 || gender == 4) {
+			$.ajax({
+				type: 'POST',
+				data: { email: email, gender: gender, birth: birth },
+				datatype: 'json',
+				url: 'passwordFindUP',
+				success: function(data) {
+					if (data == "y") {
+						document.location.href = "passwordChange?email=" + email;
+					} else {
+						alert("일치하는 정보가 없습니다");
+					}
+				},
+				error: function(xhr, status, error) {
+					alert('ajax error : ' + xhr.status + error);
 				}
-			},
-			error: function(xhr, status, error) {
-				alert('ajax error : ' + xhr.status + error);
-			}
-		});
+			});
+		} else {
+			alert('올바론 숫자를 입력하세요(ex:1,2,3,4)')
+		}
+
 	});
 
 	$('#passwordChangeClick').on('click', function() {
@@ -291,6 +279,9 @@ $(document).ready(function() {
 		});
 	});
 	$('#findPWcancel').on('click', function() {
+		self.close();
+	});
+	$('#passwordChangeCancel').on('click', function() {
 		self.close();
 	});
 	$('#couponcancelbtn').on('click', function() {
@@ -324,6 +315,15 @@ $(document).ready(function() {
 				$('#totalPrice').text();
 				$('#paymentstrong1').text(totalPrice1);
 			}
+		}
+	});
+	$('#memberInsert').on('click', function() {
+		var password = $('#password').val();
+		var passwordchk = $('#passwordchk').val();
+		if (password == passwordchk) {
+			$('#memberinsertform').attr('action', 'memberInsertSave').submit();
+		} else {
+			alert('비밀번호가 일치하지 않습니다');
 		}
 	});
 });

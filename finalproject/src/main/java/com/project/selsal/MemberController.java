@@ -128,15 +128,13 @@ public class MemberController {
    
 	//---------------회원가입하기
    @RequestMapping(value = "/memberInsertSave", method = RequestMethod.POST)
-   public String memberInsertSave(Model model,@ModelAttribute Member member ) {
+   public String memberInsertSave(Model model,@ModelAttribute Member member) {
       MemberDao daomember = sqlSession.getMapper(MemberDao.class);
       
       String encodepassword = hashPassword(member.getPassword());
       member.setPassword(encodepassword);
-      
-      daomember.insertRow(member);
-      
-      
+      daomember.insertRow(member);  
+
       return "index";
    }
 	//---------------마이페이지

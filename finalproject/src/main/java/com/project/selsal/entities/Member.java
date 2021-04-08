@@ -8,6 +8,7 @@ public class Member {
 	private String email;
 	private String name;
 	private String password;
+	private String passwordchk;
 	private String phone1;
 	private String phone2;
 	private String phone3;
@@ -22,6 +23,15 @@ public class Member {
 	private String oldpassword;
 	private int coupon;
 	
+	
+	
+	
+	public String getPasswordchk() {
+		return passwordchk;
+	}
+	public void setPasswordchk(String passwordchk) {
+		this.passwordchk = passwordchk;
+	}
 	public int getCoupon() {
 		return coupon;
 	}

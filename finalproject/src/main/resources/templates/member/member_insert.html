@@ -23,47 +23,47 @@
 						<tr>
 							<th>이메일</th>
 							<td>
-								<input  type = "email" name = "email" id ="email"placeholder = "E-mail"required>
-								<button type="button" name="" class="ui gray button doublecheck" id = >중복확인</button>
+								<input  type = "email" name = "email" id ="email"placeholder = "E-mail" maxlength="20"required>
+								<button type="button" name="" class="doublecheck" id = >중복확인</button>
 							</td>
 						</tr>
 						<tr>
 							<th>이름</th>
 							<td>
-								<input type = "text" name = "name" id ="name"placeholder = "이름" onclick="doublecheck();" required>
+								<input type = "text" name = "name" id ="name"placeholder = "이름"maxlength="3" onclick="doublecheck();" required>
 							</td>
 						</tr>
 						<tr>
 							<th>비밀번호</th>
 							<td>
 								<input type = "password" name = "password" id ="password" placeholder = "비밀번호를" required>
-								<button class="ui button" id="pwshow" type="button">비밀번호 보이기</button>
-								<button class="ui button" id="pwhide" type="button" style="display:none">비밀번호 숨기기</button>
+								<button  id="pwshow" type="button">비밀번호 보이기</button>
+								<button  id="pwhide" type="button" style="display:none">비밀번호 숨기기</button>
 							</td>
 						</tr>
 						<tr>
 							<th>비밀번호 체크</th>
 							<td>
 								<input type = "password" name = "passwordchk" id ="passwordchk" placeholder = "비밀번호를 확인" required>
-								<i class="big green checkmark icon" id="pwsame" style="display:none"></i>
-								<i class="big red cancel icon" id="pwdifferent" style="display:none"></i>
+								<span id="pwsame" style="display:none;color:green;font-size:11px;">패스워드가 일치합니다</span>
+								<span id="pwdifferent" style="display:none;color:red;font-size:11px;">패스워드가 다릅니다</span>
 							</td>
 						</tr>
 						<tr>
 							<th>연락처</th>
 							<td>
-								<input type = "text" name = "phone1" id ="phone1"maxlength="3" placeholder="010" required>
-								<input type = "text" name = "phone2" id ="phone2"maxlength="4" placeholder="0000" required>
+								<input type = "text" name = "phone1" id ="phone1"maxlength="3" placeholder="010" required>-
+								<input type = "text" name = "phone2" id ="phone2"maxlength="4" placeholder="0000" required>-
 								<input type = "text" name = "phone3" id ="phone3"maxlength="4" placeholder="0000" required>
 							</td>
 						</tr>
 						<tr>
-							<th>우편번호</th>
+							<th>주소</th>
 							<td>
 								<input type = "text" name = "zipcode" id ="zipcode" required readonly>
-								<input type = "text" name = "address" id ="addr1" required>
-								<button type="button" name="" class="ui gray button adrrconfirm" onclick="zipcodeFind()">
-								<i class="search icon"></i></button>
+								<button type="button" name="" class="adrrconfirm" onclick="zipcodeFind()">
+								주소찾기</button><br>
+								<input type = "text" name = "address" id ="addr1" required><br>
 								<input type = "text" name = "detailaddress" id ="addr2" required>
 							</td>
 						</tr>
@@ -76,7 +76,7 @@
 						</tr>
 						<tr>
 							<td colspan = "2" align = "right">
-								<button class="ui inverted green button" type ="submit" >가입하기</button>
+								<button class="ui inverted green button" type ="button" id="memberInsert">가입하기</button>
 								<button class="ui inverted red button" onclick="location.href='index'">취소</button>
 							<td>
 						</tr>
@@ -87,16 +87,13 @@
 			<div class="ui mini modal" >
 				<i class="close icon"></i>
 				<div class="header">Email 중복검사</div>
-				
-					<div class="ui">
-						<i class="envelope icon" style="width: 20px; height: 20px"></i>
-					</div>
+					<i class="envelope icon" id = "emailicon"></i>
 					<div class="description">
 						<div class="ui header"></div>
 					</div>
 				
 				<div class="actions">
-<!-- 					<div class="ui black deny button">close</div> -->
+					
 					<div class="ui positive right labeled icon button">
 						확인 <i class="checkmark icon"></i>
 					</div>
